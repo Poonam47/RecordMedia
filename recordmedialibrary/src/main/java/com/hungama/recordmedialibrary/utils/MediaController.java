@@ -93,11 +93,11 @@ public class MediaController implements Constants
     {
         storeType(context, type);
         Intent intent = plainGalleryPickerIntent();
-        if (Build.VERSION.SDK_INT >= 18)
-        {
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, configuration(context)
-                    .allowsMultiplePickingInGallery());
-        }
+//        if (Build.VERSION.SDK_INT >= 18)
+//        {
+//            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, configuration(context)
+//                    .allowsMultiplePickingInGallery());
+//        }
         return intent;
 
     }

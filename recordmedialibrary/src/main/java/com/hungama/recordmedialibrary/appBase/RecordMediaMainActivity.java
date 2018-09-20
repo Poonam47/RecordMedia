@@ -10,6 +10,7 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -68,7 +69,8 @@ public class RecordMediaMainActivity extends AppCompatActivity implements
 
     // both in milliseconds
     private static final long MIN_VIDEO_LENGTH = 1 * 1000;
-    private static final long MAX_VIDEO_LENGTH = 90 * 1000;
+    //private static final long MAX_VIDEO_LENGTH = 90 * 1000;
+    private static final long MAX_VIDEO_LENGTH = 250 * 1000;
 
     private FixedRatioCroppedTextureView mPreview;
     private ImageView mBtnResumeOrPause;
@@ -1135,10 +1137,14 @@ public class RecordMediaMainActivity extends AppCompatActivity implements
             {
                 e.printStackTrace();
             }
-            Intent intent = new Intent(RecordMediaMainActivity.this, PlaybackActivity.class);
-            intent.putExtra(PlaybackActivity.INTENT_NAME_VIDEO_PATH, returnedPhotos.get(0)
-                    .getAbsolutePath());
-            startActivity(intent);
+            Intent i = new Intent();
+            i.putExtra("response", returnedPhotos.get(0).getAbsolutePath());
+            startActivityForResult(i, 1001);
+            finish();
+//            Intent intent = new Intent(RecordMediaMainActivity.this, PlaybackActivity.class);
+//            intent.putExtra(PlaybackActivity.INTENT_NAME_VIDEO_PATH, returnedPhotos.get(0)
+//                    .getAbsolutePath());
+//            startActivity(intent);
         }
         else
         {
@@ -1163,9 +1169,18 @@ public class RecordMediaMainActivity extends AppCompatActivity implements
         if (mRecording)
         {
             pauseRecording();
+            //MediaController.clearConfiguration(this);
+            stopRecording();
+            stopRecorder();
+            releaseRecorder(true);
         }
-        MediaController.clearConfiguration(this);
-        stopRecorder();
-        releaseRecorder(true);
+        else
+        {
+            MediaController.clearConfiguration(this);
+            stopRecording();
+            stopRecorder();
+            releaseRecorder(true);
+            super.onBackPressed();
+        }
     }
 }
