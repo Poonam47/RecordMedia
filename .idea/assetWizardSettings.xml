@@ -28,10 +28,11 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_contest_switch_camera" />
+                            <entry key="outputName" value="ic_contest_video_record_stop" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\Poonam.Patel" />
+                            <entry key="sourceFile" value="D:\DATA\My Documents\Ranveer_Brar\Android Assets\ic_record_stop.svg" />
                           </map>
                         </option>
                       </PersistentState>

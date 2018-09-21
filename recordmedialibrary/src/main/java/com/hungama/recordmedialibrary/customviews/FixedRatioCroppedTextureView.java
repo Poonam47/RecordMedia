@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.TextureView;
 
 import com.hungama.recordmedialibrary.utils.MiscUtils;
@@ -71,6 +72,7 @@ public class FixedRatioCroppedTextureView extends TextureView
 
     @Override
     public void layout(int l, int t, int r, int b) {
+        Log.d(FixedRatioCroppedTextureView.class.getSimpleName(), "layout: "+ "l "+l+" t "+t+" r "+r+" b "+b);
         int actualPreviewWidth;
         int actualPreviewHeight;
         int top;
@@ -80,13 +82,17 @@ public class FixedRatioCroppedTextureView extends TextureView
             actualPreviewWidth = actualPreviewHeight * mPreviewWidth / mPreviewHeight;
             left = l + ((r - l) - actualPreviewWidth) / 2;
             top = t;
+           // super.layout(left, top, left + actualPreviewWidth, top + actualPreviewHeight);
         } else {
             actualPreviewWidth = r - l;
             actualPreviewHeight = actualPreviewWidth * mPreviewHeight / mPreviewWidth;
             top = t + ((b - t) - actualPreviewHeight) / 2;
             left = l;
+           // super.layout(left, top, left + actualPreviewWidth, top + actualPreviewHeight);
         }
+        Log.d(FixedRatioCroppedTextureView.class.getSimpleName(), "layout: final "+ "l "+left+" t "+top+" r "+left + actualPreviewWidth+" b "+top+actualPreviewHeight);
         super.layout(left, top, left + actualPreviewWidth, top + actualPreviewHeight);
+
     }
 
     public void setPreviewSize(int previewWidth, int previewHeight) {

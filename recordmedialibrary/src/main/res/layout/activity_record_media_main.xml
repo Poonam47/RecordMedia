@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="#85000000"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -26,7 +26,8 @@
             android:id="@+id/img_switch_camera"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_gravity="center"
+            android:layout_gravity="right"
+            android:layout_marginRight="32dp"
             android:contentDescription="@string/switch_camera"
             android:src="@drawable/ic_contest_camera_rear" />
     </LinearLayout>
@@ -36,6 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
+        android:background="#85000000"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:weightSum="3">
@@ -49,10 +51,10 @@
 
         <ImageView
             android:id="@+id/img_camera_record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_weight="1"
-            android:src="@android:drawable/ic_menu_camera" />
+            android:src="@drawable/ic_contest_video_record" />
 
         <ImageView
             android:id="@+id/img_upload_video"

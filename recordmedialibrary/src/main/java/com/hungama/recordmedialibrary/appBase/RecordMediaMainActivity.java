@@ -132,11 +132,12 @@ public class RecordMediaMainActivity extends AppCompatActivity implements
         int margin = (int) MiscUtils.dpToPixelConvertor(24, getApplicationContext());
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
-        mPreviewWidth = width;
-        mPreviewHeight = height;
-        videoWidth = width;
-        videoHeight = height;
+//        mPreviewWidth = width;
+//        mPreviewHeight = height;
+//        videoWidth = width;
+//        videoHeight = height;
         setPreviewSize(mPreviewWidth, mPreviewHeight);
+       // mPreview.setCroppedSizeWeight(videoWidth, videoHeight);
         mPreview.setCroppedSizeWeight(width, height);
         mPreview.setSurfaceTextureListener(this);
         mBtnResumeOrPause.setOnClickListener(this);
@@ -318,7 +319,6 @@ public class RecordMediaMainActivity extends AppCompatActivity implements
             final SurfaceTexture surfaceTexture = mPreview.getSurfaceTexture();
             new ProgressDialogTask<Void, Integer, Void>(R.string.please_wait)
             {
-
                 @Override
                 protected Void doInBackground(Void... params)
                 {
@@ -327,6 +327,7 @@ public class RecordMediaMainActivity extends AppCompatActivity implements
                     releaseCamera();
 
                     mCameraId = (mCameraId + 1) % 2;
+
                     acquireCamera();
                     startPreview(surfaceTexture);
                     startRecording();
@@ -358,7 +359,6 @@ public class RecordMediaMainActivity extends AppCompatActivity implements
     private void doAfterAllPermissionsGranted()
     {
         acquireCamera();
-        switchCameraImage(mCameraId);
         SurfaceTexture surfaceTexture = mPreview.getSurfaceTexture();
         if (surfaceTexture != null)
         {
@@ -404,17 +404,25 @@ public class RecordMediaMainActivity extends AppCompatActivity implements
 
         Camera.Parameters parameters = mCamera.getParameters();
         List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
-//        Camera.Size previewSize = CameraHelper.getOptimalSize(previewSizes,
-//                PREFERRED_PREVIEW_WIDTH, PREFERRED_PREVIEW_HEIGHT);
         Camera.Size previewSize = CameraHelper.getOptimalSize(previewSizes,
-                mPreviewWidth, mPreviewWidth);
+                PREFERRED_PREVIEW_WIDTH, PREFERRED_PREVIEW_HEIGHT);
+//        Camera.Size previewSize = CameraHelper.getOptimalSize(previewSizes,
+//                mPreviewWidth, mPreviewWidth);
         // if changed, reassign values and request layout
         if (mPreviewWidth != previewSize.width || mPreviewHeight != previewSize.height)
         {
             mPreviewWidth = previewSize.width;
             mPreviewHeight = previewSize.height;
             setPreviewSize(mPreviewWidth, mPreviewHeight);
-            mPreview.requestLayout();
+            runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    mPreview.requestLayout();
+                }
+            });
+
         }
         parameters.setPreviewSize(mPreviewWidth, mPreviewHeight);
 //        parameters.setPreviewFormat(ImageFormat.NV21);
@@ -685,7 +693,7 @@ public class RecordMediaMainActivity extends AppCompatActivity implements
                 public void run()
                 {
                     mBtnSwitchCamera.setVisibility(View.INVISIBLE);
-                    mBtnResumeOrPause.setImageResource(android.R.drawable.ic_menu_edit);
+                    mBtnResumeOrPause.setImageResource(R.drawable.ic_contest_video_record_stop);
                 }
             });
             mRecording = true;
@@ -703,7 +711,7 @@ public class RecordMediaMainActivity extends AppCompatActivity implements
                 public void run()
                 {
                     mBtnSwitchCamera.setVisibility(View.VISIBLE);
-                    mBtnResumeOrPause.setImageResource(android.R.drawable.ic_menu_camera);
+                    mBtnResumeOrPause.setImageResource(R.drawable.ic_contest_video_record);
                 }
             });
             mRecording = false;
@@ -1022,8 +1030,9 @@ public class RecordMediaMainActivity extends AppCompatActivity implements
         protected void onPreExecute()
         {
             super.onPreExecute();
-            mProgressDialog = ProgressDialog.show(RecordMediaMainActivity.this,
-                    null, getString(promptRes), true);
+
+//            mProgressDialog = ProgressDialog.show(RecordMediaMainActivity.this,
+//                    null, getString(promptRes), true);
         }
 
         @Override
@@ -1037,8 +1046,9 @@ public class RecordMediaMainActivity extends AppCompatActivity implements
         protected void onPostExecute(Result result)
         {
             super.onPostExecute(result);
-            mProgressDialog.dismiss();
             switchCameraImage(mCameraId);
+          //  mProgressDialog.dismiss();
+
         }
     }
 
